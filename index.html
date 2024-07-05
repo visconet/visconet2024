@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Replace the content tag with appropriate information -->
+  <meta name="description" content="ViscoNet - the most versatile human image generation tool">
+  <meta property="og:title" content="SOCIAL MEDIA TITLE TAG"/>
+  <meta property="og:description" content="SOCIAL MEDIA DESCRIPTION TAG TAG"/>
+  <meta property="og:url" content="https://www.linkedin.com/in/soonyau/"/>
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
+  <meta property="og:image" content="static/image/9_texture_transfer.png" />
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+
+
+  <meta name="twitter:title" content="https://visconet.github.io/visconet/">
+  <meta name="twitter:description" content="ViscoNet: The most versatile human generative AI model">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
+  <meta name="twitter:image" content="static/images/9_texture_transfer.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Keywords for your paper to be indexed by-->
+  <meta name="keywords" content="generative AI, computer vision, diffusion models, human image, fashion AI">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <title>ViscoNet: Bridging and Harmonizing Visual and Textual Conditioning for ControlNet</title>
+  <link rel="icon" type="image/x-icon" href="static/images/visconet.ico">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+  rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+ 
+</head>
+<body>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">ViscoNet:<br> Bridging and Harmonizing<br> Visual and Textual Conditioning<br> for ControlNet</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <span class="author-block">
+                <div class="column has-text-centered">
+                  <div class="publication-links">
+                       <!-- Arxiv PDF link -->
+                    <span class="link-block">
+                      <a href="static/pdfs/appendix.pdf" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>Appendix</span>
+                    </a>
+                  </span>                
+                <span class="link-block">
+                  <a href="https://huggingface.co/spaces/visconet/visconet" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>Demo</span>
+                <!-- Github link -->
+                  <span class="link-block">
+                    <a href="https://huggingface.co/spaces/visconet/visconet/tree/main" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+
+
+                </a>
+              </span>              
+            </div>
+          </div>
+          <!-- <span> Let us know if Demo link is not running.</span> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Teaser video-->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <span><b>TL;DR: </b>We add visual prompt to ControlNet. By adjusting the control strength and different spatial resolutions, our method harmonizes between visual and text prompt, avoiding mode collapse suffered by ControlNet and T2I-Adapter and achieve various image tasks. All trained with small dataset on a single GPU. </span>
+       <!--<div class="publication-video">
+
+        <iframe src="https://www.youtube.com/embed/J2QYb2F-sxg" frameborder="0" allow="autoplay; encrypted-media" ></iframe>
+      </div>      
+    -->
+     <video poster="" id="tree" autoplay muted controls controlsList="nofullscreen"   height="100%">
+        <source src="static/videos/visconet.mp4"
+        type="video/mp4">
+      </video>
+      
+      <h2 class="subtitle has-text-centered">
+      </h2>
+    </div>
+  </div>
+</section>
+<!-- End teaser video -->
+
+
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            This paper introduces ViscoNet, a novel method that enhances text-to-image human generation models with visual prompting. Unlike existing methods that rely on lengthy text descriptions to control the image structure, ViscoNet allows users to specify the visual appearance of the target object with a reference image. ViscoNet disentangles the object’s appearance from the image background and injects it into a pre-trained latent diffusion model (LDM) model via a ControlNet branch. This way, ViscoNet mitigates the style mode collapse problem and enables precise and flexible visual control. We demonstrate the effectiveness of ViscoNet on human image generation, where it can manipulate visual attributes and artistic styles by adjusting the control strength of visual prompt at different spatial resolutions. We also show that ViscoNet can learn visual conditioning from small and specific object domains while preserving the generative power of the LDM backbone.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+<!-- Method -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Method</h2>
+        <div class="container">
+          <img src="static/images/visconet.png"alt="MY ALT TEXT"/>
+        </div>
+        <div class="content has-text-justified">
+          <p>
+            We replaces text embedding in ControlNet with image embedding. This severes the entanglement between ControlNet and backbone LDM (StableDiffusion). We applies human masking to control signals to avoid overfitting LDM with blank background of small training dataset.  
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-centered has-text-centered">
+      <h2 class="title is-3">Latent Space Interpolation</h2>    
+      <div class="row">
+        <div class="column1">
+          <img src="static/images/superman.avifs"alt="MY ALT TEXT"  width="400"/>
+        </div>         
+        <div class="column2">
+          <div class="col">
+          <img src="static/images/sculpture.gif"alt="MY ALT TEXT" width="400"/>
+          </div>
+          <div class="col">
+            <img src="static/images/tomcruise.gif"alt="MY ALT TEXT"  width="400"/>
+          </div>        
+        <div class="col">
+          <img src="static/images/woman_ukiyoe.gif"alt="MY ALT TEXT"/>
+          </div>        
+        <div class="col">
+        <img src="static/images/age2.gif"alt="MY ALT TEXT"/>
+        <p>Fixing visual prompt and change age in text prompt.</p>
+        </div>
+                               
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Image carousel -->
+<section class="hero is-small">  
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3">DeepFakes, Virtual Try-on, Pose Transfer</h2>
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item">
+          <!-- Your image here -->
+          <img src="static/images/gadot.png" alt="MY ALT TEXT"/>
+          <h2 class="subtitle has-text-centered">
+           DeepFakes + virtual try-on + pose transfer.
+         </h2>
+       </div>        
+       <div class="item">
+        <!-- Your image here -->
+        <img src="static/images/deepfake1.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+          DeepFakes with visual prompt.
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="static/images/deepfake2.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+          DeepFakes celebrities with text prompt.
+        </h2>
+      </div>
+     <div class="item">
+      <!-- Your image here -->
+      <img src="static/images/vtron.png" alt="MY ALT TEXT"/>
+      <h2 class="subtitle has-text-centered">
+        Virtual try-on. 
+      </h2>
+    </div>
+    <div class="item">
+      <!-- Your image here -->
+      <img src="static/images/pose_transfer.png" alt="MY ALT TEXT"/>
+      <h2 class="subtitle has-text-centered">
+        Pose transfer..
+      </h2>
+    </div>    
+  </div>
+</div>
+</div>
+</section>
+<!-- End image carousel -->
+
+<!-- Image carousel -->
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-centered has-text-centered">
+      <h2 class="title is-3">Stylization</h2>
+      <p> We avoid mode collapse by reducing the visual control signal strength. We remove the face visual prompt in some challenging image styles.</p>      
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item">
+          <!-- Your image here -->
+          <img src="static/images/banner.jpg" alt="MY ALT TEXT"/>
+          <h2 class="subtitle has-text-centered">
+          </h2>
+        </div>        
+        <div class="item">
+          <!-- Your image here -->
+          <img src="static/images/style1.png" alt="MY ALT TEXT"/>
+          <h2 class="subtitle has-text-centered">
+         </h2>
+       </div>        
+       <div class="item">
+        <!-- Your image here -->
+        <img src="static/images/style2.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+        </h2>
+       </div>
+       <div class="item">
+        <!-- Your image here -->
+        <img src="static/images/banksy.jpg" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+        </h2>
+       </div>       
+     <div class="item">
+      <!-- Your image here -->
+      <img src="static/images/modecollapse.png" alt="MY ALT TEXT"/>
+      <h2 class="subtitle has-text-centered">
+      </h2>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- End image carousel -->
+
+
+<!-- Image carousel -->
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-centered has-text-centered">
+      <h2 class="title is-3">Texture Transfer</h2>
+      <p> We achieve texture transfer by only applying visual control signals at high spatial resolutions.</p>      
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item">
+          <img src="static/images/9_texture_transfer.jpg" alt="MY ALT TEXT"/>
+        </div>        
+        <div class="item">
+          <img src="static/images/9_texture_transfer_2.jpg" alt="MY ALT TEXT"/>
+       </div>         
+       <div class="item">
+        <img src="static/images/spiderman.jpg" alt="MY ALT TEXT"/>
+     </div>                
+  </div>
+</div>
+</div>
+
+
+
+</section>
+<!-- End image carousel -->
+
+<!-- Youtube video -->
+<section class="hero is-small is-light">
+  <div class="hero-body">
+    <div class="container">
+      <!-- Paper video. -->
+      <h2 class="title is-3" onclick="scrollToTop()" >Demo App </h2>
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          
+          <video poster="" id="tree" autoplay muted controls controlsList="nofullscreen"   height="100%">
+            <source src="static/videos/visconet_demo.mp4"
+            type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End youtube video -->
+
+
+  <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
